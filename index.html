@@ -323,6 +323,9 @@
       backface-visibility: hidden;
       -webkit-transform-style: preserve-3d;
       -webkit-backface-visibility: hidden;
+      will-change: transform;
+      transform: translateX(-50%) translateZ(0);
+      -webkit-transform: translateX(-50%) translateZ(0);
     }
 
     .timer {
@@ -336,6 +339,7 @@
       width: 100%;
       transform: translateZ(0);
       -webkit-transform: translateZ(0);
+      will-change: transform;
     }
 
     .timer::before {
@@ -383,6 +387,7 @@
       -webkit-transform: translateZ(0);
       backface-visibility: hidden;
       -webkit-backface-visibility: hidden;
+      will-change: transform;
     }
 
     .timer-unit:hover {
@@ -427,47 +432,71 @@
 
     /* Media Queries para diferentes tamanhos de tela */
     @media screen and (max-width: 480px) {
-      body::before {
-        background-size: 200px 200px;
-        opacity: 0.2;
-      }
-
       .timer-container {
         padding: 15px 10px;
         bottom: 10px;
         width: 95%;
         backdrop-filter: blur(5px);
         -webkit-backdrop-filter: blur(5px);
+        position: fixed;
+        left: 50%;
+        transform: translateX(-50%) translateZ(0);
+        -webkit-transform: translateX(-50%) translateZ(0);
       }
 
       .timer {
         gap: 5px;
+        width: 100%;
+        display: flex;
+        flex-wrap: nowrap;
       }
 
       .timer-unit {
         min-width: 40px;
         padding: 5px 2px;
         width: calc(16.666% - 4.16px);
+        flex: 0 0 auto;
       }
     }
 
     @media screen and (max-width: 360px) {
-      body::before {
-        background-size: 150px 150px;
-        opacity: 0.15;
-      }
-
       .timer-container {
         padding: 10px 5px;
         width: 98%;
         backdrop-filter: blur(3px);
         -webkit-backdrop-filter: blur(3px);
+        position: fixed;
+        left: 50%;
+        transform: translateX(-50%) translateZ(0);
+        -webkit-transform: translateX(-50%) translateZ(0);
+      }
+
+      .timer {
+        gap: 3px;
       }
 
       .timer-unit {
         min-width: 35px;
         padding: 4px 1px;
-        width: calc(16.666% - 3.33px);
+        width: calc(16.666% - 2.5px);
+        flex: 0 0 auto;
+      }
+    }
+
+    /* Prevenir zoom em dispositivos móveis */
+    @media screen and (max-width: 480px) {
+      html {
+        touch-action: manipulation;
+        -webkit-text-size-adjust: 100%;
+      }
+      
+      body {
+        touch-action: manipulation;
+        -webkit-overflow-scrolling: touch;
+        overflow-x: hidden;
+        position: fixed;
+        width: 100%;
+        height: 100%;
       }
     }
 
