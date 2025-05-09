@@ -323,9 +323,6 @@
       backface-visibility: hidden;
       -webkit-transform-style: preserve-3d;
       -webkit-backface-visibility: hidden;
-      will-change: transform;
-      transform: translateX(-50%) translateZ(0);
-      -webkit-transform: translateX(-50%) translateZ(0);
     }
 
     .timer {
@@ -339,7 +336,6 @@
       width: 100%;
       transform: translateZ(0);
       -webkit-transform: translateZ(0);
-      will-change: transform;
     }
 
     .timer::before {
@@ -387,7 +383,6 @@
       -webkit-transform: translateZ(0);
       backface-visibility: hidden;
       -webkit-backface-visibility: hidden;
-      will-change: transform;
     }
 
     .timer-unit:hover {
@@ -435,55 +430,6 @@
       body::before {
         background-size: 200px 200px;
         opacity: 0.2;
-        content: '';
-        position: fixed;
-        width: 100%;
-        height: 100%;
-        background-image: 
-          radial-gradient(2px 2px at 20px 30px, #fff, rgba(0,0,0,0)),
-          radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)),
-          radial-gradient(2px 2px at 50px 160px, #fff, rgba(0,0,0,0)),
-          radial-gradient(2px 2px at 90px 40px, #fff, rgba(0,0,0,0)),
-          radial-gradient(2px 2px at 130px 80px, #fff, rgba(0,0,0,0)),
-          radial-gradient(2px 2px at 160px 120px, #fff, rgba(0,0,0,0)),
-          radial-gradient(2px 2px at 200px 50px, #fff, rgba(0,0,0,0)),
-          radial-gradient(2px 2px at 240px 100px, #fff, rgba(0,0,0,0)),
-          radial-gradient(2px 2px at 280px 150px, #fff, rgba(0,0,0,0)),
-          radial-gradient(2px 2px at 320px 80px, #fff, rgba(0,0,0,0));
-        background-repeat: repeat;
-        z-index: 0;
-        pointer-events: none;
-      }
-
-      body {
-        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-        position: fixed;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-        touch-action: manipulation;
-        -webkit-overflow-scrolling: touch;
-      }
-
-      body::after {
-        content: '';
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: 
-          radial-gradient(circle at center, transparent 0%, rgba(26, 26, 46, 0.8) 100%),
-          linear-gradient(45deg, 
-            rgba(255, 182, 193, 0.1) 0%,
-            rgba(147, 112, 219, 0.1) 25%,
-            rgba(135, 206, 235, 0.1) 50%,
-            rgba(147, 112, 219, 0.1) 75%,
-            rgba(255, 182, 193, 0.1) 100%
-          );
-        pointer-events: none;
-        animation: aurora 15s ease-in-out infinite;
-        z-index: 0;
       }
 
       .timer-container {
@@ -492,11 +438,16 @@
         width: 95%;
         backdrop-filter: blur(5px);
         -webkit-backdrop-filter: blur(5px);
-        position: fixed;
-        left: 50%;
-        transform: translateX(-50%) translateZ(0);
-        -webkit-transform: translateX(-50%) translateZ(0);
-        z-index: 10;
+      }
+
+      .timer {
+        gap: 5px;
+      }
+
+      .timer-unit {
+        min-width: 40px;
+        padding: 5px 2px;
+        width: calc(16.666% - 4.16px);
       }
     }
 
@@ -511,38 +462,12 @@
         width: 98%;
         backdrop-filter: blur(3px);
         -webkit-backdrop-filter: blur(3px);
-        position: fixed;
-        left: 50%;
-        transform: translateX(-50%) translateZ(0);
-        -webkit-transform: translateX(-50%) translateZ(0);
-      }
-
-      .timer {
-        gap: 3px;
       }
 
       .timer-unit {
         min-width: 35px;
         padding: 4px 1px;
-        width: calc(16.666% - 2.5px);
-        flex: 0 0 auto;
-      }
-    }
-
-    /* Prevenir zoom em dispositivos móveis */
-    @media screen and (max-width: 480px) {
-      html {
-        touch-action: manipulation;
-        -webkit-text-size-adjust: 100%;
-      }
-      
-      body {
-        touch-action: manipulation;
-        -webkit-overflow-scrolling: touch;
-        overflow-x: hidden;
-        position: fixed;
-        width: 100%;
-        height: 100%;
+        width: calc(16.666% - 3.33px);
       }
     }
 
