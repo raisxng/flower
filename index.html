@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vaso SVG</title>
+  <style>
+    body {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    body::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        radial-gradient(2px 2px at 20px 30px, #fff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 50px 160px, #fff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 90px 40px, #fff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 130px 80px, #fff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 160px 120px, #fff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 200px 50px, #fff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 240px 100px, #fff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 280px 150px, #fff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 320px 80px, #fff, rgba(0,0,0,0));
+      background-repeat: repeat;
+      background-size: 350px 350px;
+      animation: twinkle 4s ease-in-out infinite;
+      opacity: 0.3;
+    }
+
+    body::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        radial-gradient(circle at center, transparent 0%, rgba(26, 26, 46, 0.8) 100%),
+        linear-gradient(45deg, 
+          rgba(255, 182, 193, 0.1) 0%,
+          rgba(147, 112, 219, 0.1) 25%,
+          rgba(135, 206, 235, 0.1) 50%,
+          rgba(147, 112, 219, 0.1) 75%,
+          rgba(255, 182, 193, 0.1) 100%
+        );
+      pointer-events: none;
+      animation: aurora 15s ease-in-out infinite;
+    }
+
+    .particles {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
+    .particle {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 50%;
+      animation: float 20s linear infinite;
+    }
+
+    .particle:nth-child(1) { left: 10%; top: 20%; animation-delay: 0s; }
+    .particle:nth-child(2) { left: 20%; top: 40%; animation-delay: -5s; }
+    .particle:nth-child(3) { left: 30%; top: 60%; animation-delay: -10s; }
+    .particle:nth-child(4) { left: 40%; top: 80%; animation-delay: -15s; }
+    .particle:nth-child(5) { left: 50%; top: 20%; animation-delay: -2s; }
+    .particle:nth-child(6) { left: 60%; top: 40%; animation-delay: -7s; }
+    .particle:nth-child(7) { left: 70%; top: 60%; animation-delay: -12s; }
+    .particle:nth-child(8) { left: 80%; top: 80%; animation-delay: -17s; }
+    .particle:nth-child(9) { left: 90%; top: 30%; animation-delay: -4s; }
+    .particle:nth-child(10) { left: 15%; top: 70%; animation-delay: -9s; }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 0.6; }
+    }
+
+    @keyframes aurora {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(5deg); }
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(0) translateX(0);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      90% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100vh) translateX(100px);
+        opacity: 0;
+      }
+    }
+
+    .flower-stack {
+      position: relative;
+      width: 180px;
+      height: 200px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      z-index: 1;
+      margin: 0 auto;
+    }
+
+    .flower-container {
+      position: absolute;
+      left: -10px;
+      top: -100px;
+      transform-origin: center bottom;
+      transition: all 0.3s ease-out;
+    }
+
+    .Stem {
+      position: absolute;
+      left: -7px;
+      top: 4px;
+      transform-origin: bottom center;
+      transition: all 0.3s ease-out;
+    }
+
+    .Vase {
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      transform: translateX(-50%);
+      z-index: 2;
+    }
+
+    .growth-indicator {
+      position: absolute;
+      right: -30px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 150px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .growth-progress {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 0%;
+      background: linear-gradient(to top, #F7C5F3, #F7CDF3);
+      transition: height 0.3s ease-out;
+    }
+
+    .growth-label {
+      position: absolute;
+      right: -25px;
+      top: -20px;
+      color: #F7C5F3;
+      font-size: 12px;
+      white-space: nowrap;
+      text-shadow: 0 0 5px rgba(247, 197, 243, 0.5);
+    }
+
+    @keyframes sway {
+      0%, 100% {
+        transform: rotate(0deg);
+      }
+      25% {
+        transform: rotate(2deg);
+      }
+      75% {
+        transform: rotate(-2deg);
+      }
+    }
+
+    .Flower {
+      transform-origin: center bottom;
+      transition: all 0.3s ease-out;
+    }
+
+    .Rectangle4, .Rectangle5, .Rectangle6, .Rectangle7, .Rectangle8, .Rectangle9, .Rectangle10, .Rectangle11 {
+      animation: ribbonSway 4.5s ease-in-out infinite;
+      transform-origin: center;
+    }
+
+    /* Animações específicas para cada folha */
+    .Rectangle4 {
+      animation: leafSway1 3.5s ease-in-out infinite;
+      transform-origin: left center;
+    }
+
+    .Rectangle5 {
+      animation: leafSway2 4s ease-in-out infinite;
+      transform-origin: right center;
+    }
+
+    .Rectangle6 {
+      animation: leafSway3 3.8s ease-in-out infinite;
+      transform-origin: left center;
+    }
+
+    .Rectangle7 {
+      animation: leafSway4 4.2s ease-in-out infinite;
+      transform-origin: right center;
+    }
+
+    .Rectangle8 {
+      animation: leafSway5 3.7s ease-in-out infinite;
+      transform-origin: center;
+    }
+
+    .Rectangle9 {
+      animation: leafSway6 4.1s ease-in-out infinite;
+      transform-origin: left center;
+    }
+
+    .Rectangle10 {
+      animation: leafSway7 3.9s ease-in-out infinite;
+      transform-origin: right center;
+    }
+
+    .Rectangle11 {
+      animation: leafSway8 4.3s ease-in-out infinite;
+      transform-origin: left center;
+    }
+
+    @keyframes leafSway1 {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(5deg); }
+    }
+
+    @keyframes leafSway2 {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(-4deg); }
+    }
+
+    @keyframes leafSway3 {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(4.5deg); }
+    }
+
+    @keyframes leafSway4 {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(-5.5deg); }
+    }
+
+    @keyframes leafSway5 {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(3.5deg); }
+    }
+
+    @keyframes leafSway6 {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(-4.5deg); }
+    }
+
+    @keyframes leafSway7 {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(5deg); }
+    }
+
+    @keyframes leafSway8 {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(-3.5deg); }
+    }
+
+    .timer-container {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(26, 26, 46, 0.95);
+      padding: 20px 40px;
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      z-index: 2;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      width: 90%;
+      max-width: 600px;
+      box-sizing: border-box;
+    }
+
+    .timer {
+      display: flex;
+      gap: 10px;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      justify-content: center;
+      position: relative;
+      flex-wrap: wrap;
+    }
+
+    .timer::before {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      height: 1px;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(247, 197, 243, 0.3),
+        transparent
+      );
+    }
+
+    .timer::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      height: 1px;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(247, 197, 243, 0.3),
+        transparent
+      );
+    }
+
+    .timer-unit {
+      text-align: center;
+      min-width: 60px;
+      padding: 8px;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      flex: 1;
+    }
+
+    .timer-unit:hover {
+      background: rgba(255, 255, 255, 0.05);
+      transform: translateY(-2px);
+    }
+
+    .timer-number {
+      font-size: clamp(16px, 4vw, 22px);
+      font-weight: bold;
+      color: #F7C5F3;
+      text-shadow: 0 0 10px rgba(247, 197, 243, 0.5);
+      margin-bottom: 5px;
+    }
+
+    .timer-label {
+      font-size: clamp(10px, 2.5vw, 11px);
+      color: #fff;
+      opacity: 0.9;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 500;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    .timer-number {
+      animation: pulse 2s infinite;
+    }
+
+    /* Media Queries para diferentes tamanhos de tela */
+    @media screen and (max-width: 480px) {
+      .timer-container {
+        padding: 15px 20px;
+        bottom: 10px;
+      }
+
+      .timer {
+        gap: 5px;
+      }
+
+      .timer-unit {
+        min-width: 50px;
+        padding: 5px;
+      }
+
+      .flower-stack {
+        width: 150px;
+        height: 170px;
+        top: 40px;
+      }
+
+      .flower-container {
+        transform-origin: center bottom;
+      }
+    }
+
+    @media screen and (max-width: 360px) {
+      .timer-container {
+        padding: 10px 15px;
+      }
+
+      .timer-unit {
+        min-width: 45px;
+        padding: 4px;
+      }
+
+      .flower-stack {
+        width: 130px;
+        height: 150px;
+      }
+    }
+
+    /* Ajuste para telas muito pequenas */
+    @media screen and (max-height: 600px) {
+      .flower-stack {
+        top: 20px;
+      }
+
+      .timer-container {
+        bottom: 5px;
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="particles">
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+  </div>
+  <div class="flower-stack" style="position: relative; width: 180px; height: 200px; display: flex; align-items: flex-end; justify-content: center; top: 60px;">
+    <div class="flower-container">
+      <div data-layer="Flower" class="Flower" style="width: 143.14px; height: 101.40px; position: relative; z-index: 0;">
+        <div data-svg-wrapper data-layer="Rectangle 24" class="Rectangle24" style="left: 109.84px; top: 9.93px; position: absolute">
+          <svg width="68" height="71" viewBox="0 0 68 71" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9.02196 22.5077C12.7065 17.646 15.8844 15.7967 21.022 12.5077C26.1595 9.21872 30.337 7.34302 36.022 5.50772C41.7069 3.67242 45.1994 3.37684 51.022 2.50772C56.8445 1.63859 64.022 0.636021 66.022 1.00772C68.022 1.37942 67.522 52.0077 66.022 54.0077C64.522 56.0077 46.5219 64.6298 34.522 67.5077C22.522 70.3856 6.02196 72.0077 3.02196 70.0077C0.0219522 68.0077 0.54718 49.9632 2.02196 42.0077C3.49673 34.0522 5.33744 27.3695 9.02196 22.5077Z" fill="url(#paint0_linear_2_19)"/>
+            <defs>
+              <linearGradient id="paint0_linear_2_19" x1="63" y1="4" x2="30" y2="30.5" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#F7C5F3"/>
+                <stop offset="1" stop-color="#F7CDF3"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div data-svg-wrapper data-layer="Rectangle 25" class="Rectangle25" style="left: 92.03px; top: 0px; position: absolute">
+          <svg width="46" height="64" viewBox="0 0 46 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0.54043 26.5446C3.59304 21.6079 6.22672 18.7934 10.3088 14.2027C14.3908 9.61207 22.5192 -0.351313 24.9613 0.00954518C27.4034 0.370404 32.0369 7.21354 35.9507 12.3514C39.8645 17.4894 42.6143 20.8242 44.498 27.1617C46.3817 33.4993 43.2485 52.1721 35.9507 58.0165C28.6529 63.8608 16.414 64.6963 12.7509 63.5703C9.08774 62.4444 -2.51218 31.4814 0.54043 26.5446Z" fill="#F7C6F3"/>
+          </svg>
+        </div>
+        <div data-svg-wrapper data-layer="Rectangle 27" class="Rectangle27" style="left: 29.86px; top: 13.71px; position: absolute">
+          <svg width="42" height="40" viewBox="0 0 42 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1.52197 1.00771C3.02197 0.515904 7.62742 0.718866 11.522 1.00771C15.4165 1.29655 17.671 1.63361 21.522 2.50771C25.3729 3.38181 29.0708 4.5256 32.522 6.00771C35.9731 7.48981 38.3102 7.90895 41.022 10.5077C43.7337 13.1065 40.1283 35.8798 36.522 39.0077C32.9156 42.1356 1.52197 34.0077 1.52197 31.5077C1.52197 29.0077 0.0219673 1.49951 1.52197 1.00771Z" fill="#F6C3F3"/>
+          </svg>
+        </div>
+        <div data-svg-wrapper data-layer="Rectangle 26" class="Rectangle26" style="left: 62.76px; top: 3px; position: absolute">
+          <svg width="63" height="83" viewBox="0 0 63 83" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7.42716 0.213823C9.82262 -1.36504 22.9241 6.10463 32.1803 12.5838C41.4364 19.063 52.1424 27.4278 56.9334 36.0868C61.7243 44.7458 64.9692 59.9067 60.9258 73.1967C56.8824 86.4868 35.9611 84.3 24.1954 78.1447C12.4297 71.9895 2.63624 57.1157 1.03926 47.2198C-0.557716 37.3238 5.03169 1.79268 7.42716 0.213823Z" fill="url(#paint0_linear_2_23)"/>
+            <defs>
+              <linearGradient id="paint0_linear_2_23" x1="9" y1="6.16375e-07" x2="44.5" y2="87" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#F6BFF4"/>
+                <stop offset="1" stop-color="#FFE3FB"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div data-svg-wrapper data-layer="Ellipse 6" class="Ellipse6" style="left: 73px; top: 43px; position: absolute">
+          <svg width="62" height="61" viewBox="0 0 62 61" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="31" cy="30.5" rx="31" ry="30.5" fill="#F7C5F3"/>
+          </svg>
+        </div>
+        <div data-svg-wrapper data-layer="Rectangle 21" class="Rectangle21" style="left: 103.72px; top: 43.15px; position: absolute">
+          <svg width="85" height="65" viewBox="0 0 85 65" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1.52195 49.5077C0.253351 44.7939 0.661831 41.8129 1.52195 37.0077C2.38206 32.2025 3.67062 29.426 6.02195 25.0077C8.37327 20.5895 9.93765 18.0497 13.5219 14.5077C17.1062 10.9657 21.7838 8.28133 25.5219 6.50771C29.2601 4.7341 31.5011 3.98324 35.5219 3.00771C39.5428 2.03219 44.0409 1.94721 49.5219 1.50771C55.003 1.06822 82.9976 -0.992285 84.0219 1.00771C85.0463 3.00771 84.0533 13.3265 82.5219 21.0077C80.9906 28.689 80.3172 33.7264 76.0219 40.5077C71.7267 47.289 58.3493 55.7235 45.5219 60.0077C32.6945 64.2919 16.2058 66.84 11.0219 63.0077C5.83807 59.1755 2.79054 54.2215 1.52195 49.5077Z" fill="url(#paint0_linear_2_13)"/>
+            <defs>
+              <linearGradient id="paint0_linear_2_13" x1="80.5" y1="2" x2="6.5" y2="48.5" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#F6BFF4"/>
+                <stop offset="1" stop-color="#F8E8EF"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div data-svg-wrapper data-layer="Rectangle 20" class="Rectangle20" style="left: 92.04px; top: 78.85px; position: absolute">
+          <svg width="102" height="70" viewBox="0 0 102 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1.02196 21.0077C4.02196 17.5077 20.6586 8.00012 28.022 5.50772C35.3854 3.01531 39.7948 2.35775 47.522 1.50772C55.2491 0.657683 64.2617 0.605704 71.022 1.50772C77.7823 2.40973 82.7539 3.63383 88.022 5.50772C93.2901 7.38161 99.022 9.83335 101.022 11.5077C103.022 13.1821 78.4159 54.3193 73.522 58.0077C68.628 61.6962 65.0635 64.0711 60.022 66.0077C54.9804 67.9443 50.0237 68.7054 46.522 69.0077C43.0203 69.31 41.0175 69.3748 37.522 69.0077C34.0265 68.6406 17.8639 64.1582 10.022 55.0077C2.18006 45.8572 -1.97804 24.5077 1.02196 21.0077Z" fill="url(#paint0_linear_2_11)"/>
+            <defs>
+              <linearGradient id="paint0_linear_2_11" x1="101" y1="11" x2="27" y2="60" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#F8E8EF"/>
+                <stop offset="1" stop-color="#F7C5F3"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div data-svg-wrapper data-layer="Rectangle 23" class="Rectangle23" style="left: 0px; top: 86.44px; position: absolute">
+          <svg width="113" height="66" viewBox="0 0 113 66" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M26.522 3.50772C33.1205 0.887971 43.9513 0.198408 55.022 0.507717C66.0926 0.817027 73.885 0.132487 83.022 5.00772C92.1589 9.88295 96.3577 16.9525 101.522 24.0077C106.686 31.0629 112.188 40.0077 112.522 43.5077C112.856 47.0077 72.0468 64.5418 65.022 65.0077C57.9971 65.4736 53.0368 65.8715 47.022 64.0077C41.0071 62.144 38.2588 59.5045 33.022 56.0077C27.7851 52.5109 -0.904865 24.0077 0.0219607 22.5077C0.948787 21.0077 6.46983 16.3982 11.022 13.0077C15.5741 9.61719 19.9234 6.12746 26.522 3.50772Z" fill="url(#paint0_linear_2_17)"/>
+            <defs>
+              <linearGradient id="paint0_linear_2_17" x1="-8.33064e-07" y1="22" x2="94.5" y2="55.5" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#F6C2F3"/>
+                <stop offset="1" stop-color="#F7E4EF"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div data-svg-wrapper data-layer="Rectangle 22" class="Rectangle22" style="left: 13.08px; top: 35.41px; position: absolute">
+          <svg width="110" height="109" viewBox="0 0 110 109" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1.02196 1.00773C2.52196 0.00773329 15.2421 0.226906 24.022 2.00773C32.8019 3.78856 37.6039 5.81697 45.522 10.0077C53.44 14.1985 59.4469 19.5911 67.522 26.5077C75.5971 33.4244 82.1314 38.6968 87.022 45.5077C91.9125 52.3187 93.6701 56.8219 97.022 64.5077C100.374 72.1935 111.522 107.508 108.522 108.508C105.522 109.508 86.5369 107.866 72.522 106.508C58.507 105.15 43.5346 104.201 36.522 101.508C29.5094 98.8148 24.7362 96.8736 19.522 92.5077C14.3078 88.1419 10.6628 82.7167 8.52197 79.0077C6.38116 75.2988 5.45978 73.0416 4.02196 69.0077C2.58415 64.9739 1.99446 62.046 1.02196 57.5077C0.0494713 52.9694 -0.478035 2.00773 1.02196 1.00773Z" fill="url(#paint0_linear_2_15)"/>
+            <defs>
+              <linearGradient id="paint0_linear_2_15" x1="47" y1="22" x2="49.5" y2="104" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#F6BFF4"/>
+                <stop offset="1" stop-color="#F7E2F0"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <div data-layer="Stem" class="Stem" style="width: 159.09px; height: 175px;">
+      <div data-layer="Rectangle 3" class="Rectangle3" style="width: 8px; height: 144px; left: 93.09px; top: 31px; position: absolute; background: linear-gradient(180deg, #EB54D4 0%, #731A91 100%)"></div>
+      <div data-svg-wrapper data-layer="Rectangle 4" class="Rectangle4" style="left: 74.04px; top: 130.20px; position: absolute">
+        <svg width="28" height="19" viewBox="0 0 28 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M1 0.499999C1.5 0.0728148 10.0196 -0.0149841 13 0.999999C15.9804 2.01498 17.5 3 20 5C22.5 7 29.2471 13.395 27 15C24.7529 16.605 15.7491 18.7603 13 18.5C10.2509 18.2397 8.5 17.5 6.5 16C4.5 14.5 0.500001 0.927184 1 0.499999Z" fill="url(#paint0_linear_1_46)"/>
+          <defs>
+            <linearGradient id="paint0_linear_1_46" x1="1" y1="4.29347e-08" x2="22" y2="16.5" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#F057D7"/>
+              <stop offset="1" stop-color="#7F1F99"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <div data-svg-wrapper data-layer="Rectangle 5" class="Rectangle5" style="left: 94.08px; top: 98px; position: absolute">
+        <svg width="34" height="24" viewBox="0 0 34 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M-3.62098e-06 22.5C0.0021902 22.3048 1.50476 15.4935 2.5 12.5C3.49523 9.50655 3.94961 6.96193 5.5 5C7.05039 3.03807 9.56119 1.97363 10.5 1.5C11.4388 1.02637 11.9728 0.724706 13 0.5C14.0272 0.275293 15.5 -6.85452e-07 16.5 0C17.5 6.85455e-07 18.5 2.98036e-08 19.5 7.15257e-07C20.5 1.40071e-06 22.2568 0.550495 24 1C25.7432 1.44951 32.6576 3 33 4C33.3424 5 30.2265 10.2938 29.5 11.5C28.7735 12.7062 28.3686 13.3918 27.5 14.5C26.6314 15.6082 25.259 17.1636 23.5 18.5C21.741 19.8364 20.2429 20.5226 18 21.5C15.7571 22.4774 14.4221 23.0167 12 23.5C9.57786 23.9833 0.00809717 23.1951 -3.62098e-06 23C-0.00810441 22.8049 -0.00219744 22.6952 -3.62098e-06 22.5Z" fill="url(#paint0_linear_1_48)"/>
+          <defs>
+            <linearGradient id="paint0_linear_1_48" x1="33" y1="4" x2="8.1697e-07" y2="22.5" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#F559D9"/>
+              <stop offset="1" stop-color="#7D1E98"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <div data-svg-wrapper data-layer="Rectangle 6" class="Rectangle6" style="left: 0px; top: 36.48px; position: absolute">
+        <svg width="96" height="69" viewBox="0 0 96 69" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0.999993 3.00001C1.99999 1.50001 12.3386 0.617202 20.5 0.500009C28.6613 0.382815 34.0857 0.653934 42.5 3.00001C50.9143 5.34608 54.5877 7.0793 63 12.5C71.4123 17.9207 77.4967 23.1152 84 32C90.5032 40.8848 96 55.5 96 57C96 58.5 73.3472 63.9304 64 66C54.6528 68.0696 54.7613 68.9635 48.5 69C42.2387 69.0366 37.81 68.4177 32.5 66C27.19 63.5823 25.1282 61.6907 21.5 58C17.8718 54.3093 20.0258 57.3792 14 47.5C7.97422 37.6208 -5.00679e-06 4.5 0.999993 3.00001Z" fill="url(#paint0_linear_1_50)"/>
+          <defs>
+            <linearGradient id="paint0_linear_1_50" x1="0.999999" y1="3.5" x2="96" y2="59" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#DF54C5"/>
+              <stop offset="1" stop-color="#751A93"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <div data-svg-wrapper data-layer="Rectangle 9" class="Rectangle9" style="left: 55.09px; top: 20px; position: absolute">
+        <svg width="41" height="31" viewBox="0 0 41 31" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0.0368946 1.14117C0.468085 0.462577 4.92601 0.0631968 8.44511 0.010179C11.9642 -0.0428389 14.3031 0.079814 17.9313 1.14117C21.5595 2.20252 23.1434 2.98663 26.7707 5.43893C30.398 7.89124 33.0216 10.2412 35.8257 14.2607C38.6299 18.2801 41 24.892 41 25.5706C41 26.2492 31.2323 28.7059 27.2019 29.6421C23.1715 30.5784 23.2182 30.9828 20.5184 30.9993C17.8186 31.0159 15.909 30.7359 13.6194 29.6421C11.3298 28.5484 10.4407 27.6926 8.8763 26.023C7.31187 24.3533 8.24063 25.7421 5.64237 21.2728C3.04412 16.8035 -0.394295 1.81976 0.0368946 1.14117Z" fill="url(#paint0_linear_1_56)"/>
+          <defs>
+            <linearGradient id="paint0_linear_1_56" x1="0.0368973" y1="1.36736" x2="41.977" y2="24.7207" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#DF54C5"/>
+              <stop offset="1" stop-color="#751A93"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <div data-svg-wrapper data-layer="Rectangle 10" class="Rectangle10" style="left: 97.27px; top: 18.90px; position: absolute">
+        <svg width="43" height="32" viewBox="0 0 43 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0.279662 29.7141C0.672958 30.4153 5.10225 31.0588 8.61313 31.3048C12.124 31.5509 14.4662 31.5568 18.1471 30.6962C21.828 29.8356 23.4526 29.1396 27.2091 26.8901C30.9655 24.6405 33.7141 22.4381 36.7346 18.5786C39.7551 14.7191 42.4846 8.24731 42.5218 7.56974C42.5591 6.89218 32.9409 3.90308 28.968 2.74701C24.995 1.59094 25.0639 1.18974 22.3691 1.02505C19.6743 0.860368 17.7521 1.03509 15.4059 2.00155C13.0598 2.96801 12.1251 3.77366 10.4714 5.35494C8.81766 6.93623 9.82124 5.60046 6.9816 9.92045C4.14197 14.2404 -0.113634 29.0128 0.279662 29.7141Z" fill="url(#paint0_linear_1_57)"/>
+          <defs>
+            <linearGradient id="paint0_linear_1_57" x1="0.292079" y1="29.4882" x2="43.4507" y2="8.47192" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#751A93"/>
+              <stop offset="1" stop-color="#DF54C5"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <div data-svg-wrapper data-layer="Rectangle 11" class="Rectangle11" style="left: 81.42px; top: 0px; position: absolute">
+        <svg width="28" height="47" viewBox="0 0 28 47" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4.5 12.5C6.12846 9.91363 16.5 0 17 0C17.5 0 20.7432 3.6768 22.5 6.5C24.2568 9.3232 25.5715 12.7114 26.5 17C27.4285 21.2886 28.0166 25.0222 27 30C25.9834 34.9778 17 46.4599 16.5 46.5C16 46.5401 9.22237 45.0853 6 42C2.77763 38.9147 1.92723 35.3943 1 31C0.0727691 26.6057 0.165155 22.4401 1 19.5C1.83484 16.5599 2.87154 15.0864 4.5 12.5Z" fill="url(#paint0_linear_1_58)"/>
+          <defs>
+            <linearGradient id="paint0_linear_1_58" x1="17" y1="1" x2="8.5" y2="51" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#F559D9"/>
+              <stop offset="1" stop-color="#7F1F99"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <div data-svg-wrapper data-layer="Rectangle 7" class="Rectangle7" style="left: 98.09px; top: 47px; position: absolute">
+        <svg width="61" height="44" viewBox="0 0 61 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0.054892 42.3803C0.696418 43.3434 7.32895 43.9103 12.5647 43.9856C17.8004 44.0608 21.2803 43.8867 26.6783 42.3803C32.0763 40.8738 34.4329 39.7609 39.8296 36.2802C45.2263 32.7995 49.1297 29.4641 53.3017 23.7591C57.4737 18.0541 61 8.66946 61 7.7063C61 6.74314 46.4676 3.2562 40.4711 1.9273C34.4747 0.598392 34.5442 0.0244293 30.5274 0.000965118C26.5107 -0.0224991 23.6695 0.374844 20.263 1.9273C16.8565 3.47975 15.5338 4.69434 13.2062 7.06419C10.8786 9.43404 12.2604 7.46278 8.39475 13.8064C4.52905 20.1499 -0.586634 41.4171 0.054892 42.3803Z" fill="url(#paint0_linear_1_52)"/>
+          <defs>
+            <linearGradient id="paint0_linear_1_52" x1="0.0548959" y1="42.0592" x2="61.0282" y2="6.47035" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#DF54C5"/>
+              <stop offset="1" stop-color="#751A93"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <div data-svg-wrapper data-layer="Rectangle 8" class="Rectangle8" style="left: 88.86px; top: 61px; position: absolute">
+        <svg width="10" height="9" viewBox="0 0 10 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0.999999 3.43322e-06C1.5 3.43322e-06 5.80043 -0.0194582 7 1C8.19957 2.01946 8.49447 3.00913 9 4.5C9.50553 5.99088 9.5 9 9.5 9C9.5 9 4.43252 9.09202 3.5 8.5C2.56748 7.90799 2.10174 7.42628 1.5 6.5C0.89826 5.57373 0.499999 3.43322e-06 0.999999 3.43322e-06Z" fill="url(#paint0_linear_1_54)"/>
+          <defs>
+            <linearGradient id="paint0_linear_1_54" x1="1" y1="2.48698e-07" x2="10" y2="9" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#F057D7"/>
+              <stop offset="1" stop-color="#8D26A1"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+    </div>
+    <div data-svg-wrapper data-layer="Vase" class="Vase">
+      <svg width="42" height="20" viewBox="0 0 42 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M20.5 0C28.3021 0 34.8386 4.26672 36.5576 10H4.44238C6.16145 4.26672 12.6979 0 20.5 0Z" fill="#741F00"/>
+        <path d="M0 4.40977C0 4.20687 0.197115 4.06163 0.391309 4.12041C1.47754 4.44916 4.67017 5.37894 8 6C12.1042 6.76549 21 6.5 21 6.5C21 6.5 30.7823 6.60015 34 6C36.6717 5.50169 40.4221 4.45204 41.6179 4.11017C41.8103 4.05516 42 4.20028 42 4.4004V19.7C42 19.8657 41.8657 20 41.7 20H0.299999C0.134314 20 0 19.8657 0 19.7V4.40977Z" fill="url(#paint0_linear_1_60)"/>
+        <circle cx="34.5" cy="13.5" r="4.5" fill="url(#paint1_linear_1_60)"/>
+        <defs>
+          <linearGradient id="paint0_linear_1_60" x1="0.5" y1="4.5" x2="42" y2="20" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#FF1414"/>
+            <stop offset="0.374552" stop-color="#FE5959"/>
+            <stop offset="1" stop-color="#D21F1F"/>
+          </linearGradient>
+          <linearGradient id="paint1_linear_1_60" x1="34.5" y1="9" x2="34.5" y2="18" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#D0DB00"/>
+            <stop offset="0.475962" stop-color="#FBFFA7"/>
+            <stop offset="1" stop-color="#D0DB00"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+    <div data-layer="Kitty" class="Kitty" style="width: 101.39px; height: 97.02px; position: absolute; left: -5px; top: -80px;">
+      <div data-svg-wrapper data-layer="Rectangle 16" class="Rectangle16" style="left: 23.09px; top: 47.02px; position: absolute">
+        <svg width="25" height="51" viewBox="0 0 25 51" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M6 4L22 0.5L24.5 50.5L11.5 43L0 50.5L6 4Z" fill="#DF493F"/>
+        </svg>
+      </div>
+      <div data-svg-wrapper data-layer="Rectangle 17" class="Rectangle17" style="left: 43.02px; top: 31.61px; position: absolute">
+        <svg width="45" height="54" viewBox="0 0 45 54" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0.499997 13.5L9.08023 0.770138L45 36L31 39L26 53.5L0.499997 13.5Z" fill="#E54C41"/>
+        </svg>
+      </div>
+      <div data-svg-wrapper data-layer="Rectangle 18" class="Rectangle18" style="left: 25.84px; top: 50.01px; position: absolute">
+        <svg width="21" height="27" viewBox="0 0 21 27" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M1 22C1.13011 20.4433 20 3.01003e-06 20 0.500004C20 1 20.6145 4.8363 20 7.5C19.3855 10.1637 12.3813 16.6665 10.5 18.5C8.6187 20.3335 7.17816 21.7176 5.5 23C3.82184 24.2825 1.50001 26.5 1 26C0.499994 25.5 0.869885 23.5567 1 22Z" fill="#BC0D00"/>
+        </svg>
+      </div>
+      <div data-svg-wrapper data-layer="Rectangle 19" class="Rectangle19" style="left: 43px; top: 39px; position: absolute">
+        <svg width="29" height="10" viewBox="0 0 25 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0.0426822 1.37676C0.480524 0.93635 0.971938 0.618169 2.23191 0.0555146C3.49188 -0.507139 21.2304 3.36697 22.3728 4.45969C23.5151 5.55242 24.9704 6.93235 24.9998 7.54261C25.0293 8.15287 21.0027 7.9723 18.4322 7.98303C15.8617 7.99376 14.0459 7.97619 11.4267 7.54261C8.80742 7.10903 5.63413 5.41817 4.85898 5.78094C4.08383 6.14372 3.54544 6.95539 3.1076 7.1022C2.66975 7.249 -0.39516 1.81717 0.0426822 1.37676Z" fill="#BC0D00"/>
+        </svg>
+      </div>
+      <div data-svg-wrapper data-layer="Rectangle 12" class="Rectangle12" style="left: 0px; top: 27.02px; position: absolute">
+        <svg width="45" height="48" viewBox="0 0 45 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0.999994 9.5C1.28454 8.10724 1.40804 7.27758 1.99999 6C2.59195 4.72242 2.9834 3.97424 3.99999 3C5.01659 2.02576 6.00653 1.49783 7.49999 1C8.99346 0.50218 9.92672 0.555491 11.5 0.500003C13.0733 0.444515 16.2175 0.916147 19 1.5C21.7825 2.08386 23.312 2.57384 26 3.5C28.688 4.42617 41.351 10.5 42 11.5C42.649 12.5 44.5 24.2055 44 26.5C43.5 28.7945 33.5389 40.2981 31.5 42C29.4611 43.7019 28.4192 44.904 26 46C23.5808 47.096 21.032 47.6637 19 47.5C16.968 47.3364 15.7173 47.0986 14 46C12.2827 44.9014 11.7343 43.6688 10.5 42C9.26571 40.3312 7.05993 35.633 5.49999 32C3.94006 28.367 2.91047 26.3475 1.99999 22.5C1.08952 18.6525 0.715452 10.8928 0.999994 9.5Z" fill="url(#paint0_linear_1_62)"/>
+          <defs>
+            <linearGradient id="paint0_linear_1_62" x1="5.5" y1="2" x2="13.5" y2="44" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#C7392F"/>
+              <stop offset="1" stop-color="#F4554A"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <div data-svg-wrapper data-layer="Rectangle 13" class="Rectangle13" style="left: 39.10px; top: 0px; position: absolute">
+        <svg width="41" height="50" viewBox="0 0 41 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M30.5 5.49998C29.4911 4.49857 28.7009 3.23513 27.5 2.5C26.2991 1.76486 25.8862 1.32228 24.5 1.07501C23.1138 0.827743 22.247 0.661405 20.7281 1.07501C19.2091 1.48861 18.4619 2.05035 17.1218 2.87634C15.7816 3.70233 13.9921 5.97155 12 7.99998C10.0079 10.0284 9.22369 11.739 7.5 14C5.77631 16.2609 -0.0142455 29.8079 -2.41663e-06 31C0.0142406 32.192 2.31578 42.3969 4.00391 44.0293C5.69203 45.6618 18.8596 48.7138 21.5 49C24.1404 49.2861 27.6565 49.212 30.2775 48.7831C32.8985 48.3541 35.3345 47.4136 36.9349 46.1509C38.5354 44.8882 38.6798 44.8663 39.5 43C40.3202 41.1337 40.1626 39.5732 40.2648 37.5C40.3669 35.4268 39.7157 30.3884 39 26.5C38.2843 22.6116 37.3752 20.2069 36 16.5C34.6248 12.7931 31.5089 6.5014 30.5 5.49998Z" fill="url(#paint0_linear_1_64)"/>
+          <defs>
+            <linearGradient id="paint0_linear_1_64" x1="22.5" y1="1" x2="15.5" y2="46" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#C4362D"/>
+              <stop offset="1" stop-color="#F8584D"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <div data-svg-wrapper data-layer="Rectangle 14" class="Rectangle14" style="left: 53.09px; top: 27.52px; position: absolute">
+        <svg width="17" height="11" viewBox="0 0 17 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2.00194 5.31565C2.85878 4.40512 7.5912 0.717909 9.50194 0.315648C11.4127 -0.0866124 13.7994 -0.123417 14.5019 0.315648C15.2044 0.754714 15.5909 1.09637 16.0019 1.81565C16.413 2.53492 16.5402 3.51147 16.5019 4.31565C16.4636 5.11982 16.3678 5.59851 16.0019 6.31565C15.6361 7.03279 14.889 7.65749 14.0019 8.31565C13.1149 8.9738 12.246 9.40568 11.0019 9.81565C9.75789 10.2256 7.95215 10.2186 6.00194 10.3156C4.05173 10.4127 1.17354 10.4907 1.00194 10.3156C0.830344 10.1405 -0.0466296 8.31565 0.0019423 7.81565C0.0505142 7.31564 1.14511 6.22617 2.00194 5.31565Z" fill="#BC0D00"/>
+        </svg>
+      </div>
+      <div data-svg-wrapper data-layer="Rectangle 15" class="Rectangle15" style="left: 22.79px; top: 42.20px; position: absolute">
+        <svg width="17" height="12" viewBox="0 0 17 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M1.00001 4.5C1.54786 3.24776 2.64504 2.69987 4.00001 2C5.35497 1.30012 6.71629 1.24323 8.50001 0.999999C10.2837 0.756765 15.5 0.413036 16 0.999999C16.5 1.58696 17.0556 5.16404 17 5.5C16.9444 5.83595 10.6419 10.0298 9.50001 10.5C8.35808 10.9702 7.4665 11.3619 6.50001 11.5C5.53351 11.6381 4.92622 11.8087 4.00001 11.5C3.0738 11.1913 2.55066 10.6777 2.00001 10C1.44935 9.32227 1.24451 8.83831 1.00001 8C0.755499 7.16169 0.452153 5.75224 1.00001 4.5Z" fill="#BC0D00"/>
+        </svg>
+      </div>
+      <div data-svg-wrapper data-layer="Ellipse 3" class="Ellipse3" style="left: 33.09px; top: 29.52px; position: absolute">
+        <svg width="27" height="25" viewBox="0 0 27 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="13.5" cy="12.5" rx="13.5" ry="12.5" fill="#BC0D00"/>
+        </svg>
+      </div>
+      <div data-svg-wrapper data-layer="Ellipse 4" class="Ellipse4" style="left: 35.09px; top: 29.52px; position: absolute">
+        <svg width="23" height="24" viewBox="0 0 23 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="11.5" cy="12" rx="11.5" ry="12" fill="#E0483E"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="timer-container">
+    <div class="timer">
+      <div class="timer-unit">
+        <div class="timer-number" id="years">00</div>
+        <div class="timer-label">Anos</div>
+      </div>
+      <div class="timer-unit">
+        <div class="timer-number" id="months">00</div>
+        <div class="timer-label">Meses</div>
+      </div>
+      <div class="timer-unit">
+        <div class="timer-number" id="days">00</div>
+        <div class="timer-label">Dias</div>
+      </div>
+      <div class="timer-unit">
+        <div class="timer-number" id="hours">00</div>
+        <div class="timer-label">Horas</div>
+      </div>
+      <div class="timer-unit">
+        <div class="timer-number" id="minutes">00</div>
+        <div class="timer-label">Minutos</div>
+      </div>
+      <div class="timer-unit">
+        <div class="timer-number" id="seconds">00</div>
+        <div class="timer-label">Segundos</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const startDate = new Date('2024-04-04T19:00:00');
+    const maxGrowthYears = 75;
+    const maxGrowthScale = 3.0;
+    let simulatedYears = 0;
+
+    function updateTimer() {
+      const now = new Date();
+      const diff = now - startDate;
+
+      // Cálculo de anos e meses
+      const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25)) + simulatedYears;
+      const months = Math.floor((diff % (1000 * 60 * 60 * 24 * 365.25)) / (1000 * 60 * 60 * 24 * 30.44));
+      const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30.44)) / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+      // Atualiza o timer sem padding de zeros
+      document.getElementById('years').textContent = years;
+      document.getElementById('months').textContent = months;
+      document.getElementById('days').textContent = days;
+      document.getElementById('hours').textContent = hours;
+      document.getElementById('minutes').textContent = minutes;
+      document.getElementById('seconds').textContent = seconds;
+
+      // Atualiza os labels para singular/plural
+      document.querySelector('.timer-unit:nth-child(1) .timer-label').textContent = years === 1 ? 'ANO' : 'ANOS';
+      document.querySelector('.timer-unit:nth-child(2) .timer-label').textContent = months === 1 ? 'MÊS' : 'MESES';
+      document.querySelector('.timer-unit:nth-child(3) .timer-label').textContent = days === 1 ? 'DIA' : 'DIAS';
+      document.querySelector('.timer-unit:nth-child(4) .timer-label').textContent = hours === 1 ? 'HORA' : 'HORAS';
+      document.querySelector('.timer-unit:nth-child(5) .timer-label').textContent = minutes === 1 ? 'MINUTO' : 'MINUTOS';
+      document.querySelector('.timer-unit:nth-child(6) .timer-label').textContent = seconds === 1 ? 'SEGUNDO' : 'SEGUNDOS';
+
+      // Calcula o crescimento da flor
+      let growthScale;
+      if (years >= maxGrowthYears) {
+        growthScale = maxGrowthScale;
+      } else {
+        // Crescimento linear até 75 anos, mas agora mais rápido
+        growthScale = 1 + (years / maxGrowthYears) * (maxGrowthScale - 1);
+      }
+
+      // Aplica o crescimento ao container da flor, ao caule e ao laço
+      const flowerContainer = document.querySelector('.flower-container');
+      const stem = document.querySelector('.Stem');
+      const kitty = document.querySelector('.Kitty');
+      
+      // Calcula o deslocamento vertical baseado no crescimento
+      const verticalOffset = -175 * (growthScale - 1);
+      
+      // Aplica o crescimento e o deslocamento
+      flowerContainer.style.transform = `translateY(${verticalOffset}px) scale(${growthScale})`;
+      stem.style.transform = `scale(${growthScale})`;
+      
+      // Ajustes extremamente refinados para o laço
+      const kittyVerticalOffset = -195 * (growthScale - 1);
+      const kittyHorizontalOffset = -12 * (growthScale - 1);
+      const kittyScale = growthScale * 0.89;
+      const kittyRotation = 3 * (growthScale - 1);
+      const kittySkew = 1 * (growthScale - 1);
+      
+      // Aplica todas as transformações com precisão extrema
+      kitty.style.transform = `
+        translate(${kittyHorizontalOffset}px, ${kittyVerticalOffset}px)
+        scale(${kittyScale})
+        rotate(${kittyRotation}deg)
+        skew(${kittySkew}deg)
+      `;
+      
+      // Ajusta a origem da transformação para um ponto mais preciso
+      kitty.style.transformOrigin = 'center 60%';
+    }
+
+    // Atualiza o timer a cada segundo
+    setInterval(updateTimer, 1000);
+
+    // Atualiza imediatamente
+    updateTimer();
+  </script>
+</body>
+</html> 
