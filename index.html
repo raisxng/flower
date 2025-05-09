@@ -299,6 +299,7 @@
       border: 1px solid rgba(255, 255, 255, 0.1);
       width: 90%;
       max-width: 600px;
+      min-width: 280px;
       box-sizing: border-box;
     }
 
@@ -310,6 +311,7 @@
       justify-content: center;
       position: relative;
       flex-wrap: wrap;
+      width: 100%;
     }
 
     .timer::before {
@@ -346,12 +348,13 @@
 
     .timer-unit {
       text-align: center;
-      min-width: 60px;
-      padding: 8px;
+      min-width: 45px;
+      width: calc(16.666% - 8.33px);
+      padding: 8px 4px;
       background: rgba(255, 255, 255, 0.03);
       border-radius: 12px;
       transition: all 0.3s ease;
-      flex: 1;
+      flex: 0 0 auto;
     }
 
     .timer-unit:hover {
@@ -365,6 +368,10 @@
       color: #F7C5F3;
       text-shadow: 0 0 10px rgba(247, 197, 243, 0.5);
       margin-bottom: 5px;
+      min-height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .timer-label {
@@ -374,6 +381,10 @@
       text-transform: uppercase;
       letter-spacing: 1px;
       font-weight: 500;
+      min-height: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     @keyframes pulse {
@@ -389,8 +400,9 @@
     /* Media Queries para diferentes tamanhos de tela */
     @media screen and (max-width: 480px) {
       .timer-container {
-        padding: 15px 20px;
+        padding: 15px 10px;
         bottom: 10px;
+        width: 95%;
       }
 
       .timer {
@@ -398,34 +410,22 @@
       }
 
       .timer-unit {
-        min-width: 50px;
-        padding: 5px;
-      }
-
-      .flower-stack {
-        width: 150px;
-        height: 170px;
-        top: 40px;
-      }
-
-      .flower-container {
-        transform-origin: center bottom;
+        min-width: 40px;
+        padding: 5px 2px;
+        width: calc(16.666% - 4.16px);
       }
     }
 
     @media screen and (max-width: 360px) {
       .timer-container {
-        padding: 10px 15px;
+        padding: 10px 5px;
+        width: 98%;
       }
 
       .timer-unit {
-        min-width: 45px;
-        padding: 4px;
-      }
-
-      .flower-stack {
-        width: 130px;
-        height: 150px;
+        min-width: 35px;
+        padding: 4px 1px;
+        width: calc(16.666% - 3.33px);
       }
     }
 
