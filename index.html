@@ -131,6 +131,7 @@
       top: -100px;
       transform-origin: center bottom;
       transition: all 0.3s ease-out;
+      will-change: transform;
     }
 
     .Stem {
@@ -139,6 +140,7 @@
       top: 4px;
       transform-origin: bottom center;
       transition: all 0.3s ease-out;
+      will-change: transform;
     }
 
     .Vase {
@@ -197,92 +199,102 @@
     .Flower {
       transform-origin: center bottom;
       transition: all 0.3s ease-out;
+      will-change: transform;
     }
 
     .Rectangle4, .Rectangle5, .Rectangle6, .Rectangle7, .Rectangle8, .Rectangle9, .Rectangle10, .Rectangle11 {
       animation: ribbonSway 4.5s ease-in-out infinite;
       transform-origin: center;
+      will-change: transform;
     }
 
     /* Animações específicas para cada folha */
     .Rectangle4 {
       animation: leafSway1 3.5s ease-in-out infinite;
       transform-origin: left center;
+      will-change: transform;
     }
 
     .Rectangle5 {
       animation: leafSway2 4s ease-in-out infinite;
       transform-origin: right center;
+      will-change: transform;
     }
 
     .Rectangle6 {
       animation: leafSway3 3.8s ease-in-out infinite;
       transform-origin: left center;
+      will-change: transform;
     }
 
     .Rectangle7 {
       animation: leafSway4 4.2s ease-in-out infinite;
       transform-origin: right center;
+      will-change: transform;
     }
 
     .Rectangle8 {
       animation: leafSway5 3.7s ease-in-out infinite;
       transform-origin: center;
+      will-change: transform;
     }
 
     .Rectangle9 {
       animation: leafSway6 4.1s ease-in-out infinite;
       transform-origin: left center;
+      will-change: transform;
     }
 
     .Rectangle10 {
       animation: leafSway7 3.9s ease-in-out infinite;
       transform-origin: right center;
+      will-change: transform;
     }
 
     .Rectangle11 {
       animation: leafSway8 4.3s ease-in-out infinite;
       transform-origin: left center;
+      will-change: transform;
     }
 
     @keyframes leafSway1 {
-      0%, 100% { transform: rotate(0deg); }
-      50% { transform: rotate(5deg); }
+      0%, 100% { transform: rotate(0deg) translateZ(0); }
+      50% { transform: rotate(5deg) translateZ(0); }
     }
 
     @keyframes leafSway2 {
-      0%, 100% { transform: rotate(0deg); }
-      50% { transform: rotate(-4deg); }
+      0%, 100% { transform: rotate(0deg) translateZ(0); }
+      50% { transform: rotate(-4deg) translateZ(0); }
     }
 
     @keyframes leafSway3 {
-      0%, 100% { transform: rotate(0deg); }
-      50% { transform: rotate(4.5deg); }
+      0%, 100% { transform: rotate(0deg) translateZ(0); }
+      50% { transform: rotate(4.5deg) translateZ(0); }
     }
 
     @keyframes leafSway4 {
-      0%, 100% { transform: rotate(0deg); }
-      50% { transform: rotate(-5.5deg); }
+      0%, 100% { transform: rotate(0deg) translateZ(0); }
+      50% { transform: rotate(-5.5deg) translateZ(0); }
     }
 
     @keyframes leafSway5 {
-      0%, 100% { transform: rotate(0deg); }
-      50% { transform: rotate(3.5deg); }
+      0%, 100% { transform: rotate(0deg) translateZ(0); }
+      50% { transform: rotate(3.5deg) translateZ(0); }
     }
 
     @keyframes leafSway6 {
-      0%, 100% { transform: rotate(0deg); }
-      50% { transform: rotate(-4.5deg); }
+      0%, 100% { transform: rotate(0deg) translateZ(0); }
+      50% { transform: rotate(-4.5deg) translateZ(0); }
     }
 
     @keyframes leafSway7 {
-      0%, 100% { transform: rotate(0deg); }
-      50% { transform: rotate(5deg); }
+      0%, 100% { transform: rotate(0deg) translateZ(0); }
+      50% { transform: rotate(5deg) translateZ(0); }
     }
 
     @keyframes leafSway8 {
-      0%, 100% { transform: rotate(0deg); }
-      50% { transform: rotate(-3.5deg); }
+      0%, 100% { transform: rotate(0deg) translateZ(0); }
+      50% { transform: rotate(-3.5deg) translateZ(0); }
     }
 
     .timer-container {
